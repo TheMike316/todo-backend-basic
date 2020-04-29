@@ -1,2 +1,12 @@
 server:
   port: 8090
+
+security:
+  jwt:
+    # just a demo; for production you'd generate a random string
+    # you'd also probably not want to store it inside the actual yml for production but set it server-side as an
+    # environment variable
+    secret: ThisIsNotAVerySecretKeyButItNeedsToBeQuiteLongSoImGonnaaddsomemoreletterstoitasweareusingasha512whichactualllyrequiresa512bitbecauseitshouldbeatleastaslongasthegeneratedhashwhowouldhavethoughtdunnomaybethisislongenoughwhatdoyouthink
+    expiration-in-ms: 86400000 #1 day
+    token-prefix: Bearer
+    header-name: Authorization

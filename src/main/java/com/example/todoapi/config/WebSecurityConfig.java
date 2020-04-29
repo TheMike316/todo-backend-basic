@@ -1,5 +1,7 @@
 package com.example.todoapi.config;
 
+import com.example.todoapi.config.jwt.JwtAuthenticationFiler;
+import com.example.todoapi.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final Environment env;
+    private final JwtTokenProvider tokenProvider;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -48,6 +51,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER);
         //@Formatter:on
+
+        http.addFilter(new JwtAuthenticationFiler(authenticationManager(), tokenProvider));
     }
 
     @Override
