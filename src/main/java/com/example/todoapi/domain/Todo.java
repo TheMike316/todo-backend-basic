@@ -25,9 +25,10 @@ public class Todo extends BaseEntity {
 
     @Builder
     public Todo(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String title,
-                Boolean completed) {
+                Boolean completed, User user) {
         super(id, version, createdDate, lastModifiedDate);
         this.title = title;
         this.completed = completed;
+        this.user = user;
     }
 }
