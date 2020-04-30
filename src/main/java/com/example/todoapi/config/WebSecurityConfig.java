@@ -38,7 +38,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
                     .and()
             .csrf()
-                .disable()// todo deal with csrf
+                .disable() // we don't need csrf protection in our case because we
+                            // (1) never create a session and
+                            // (2) jwt practically doubles as a csrf token anyways
             .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/**").authenticated()
