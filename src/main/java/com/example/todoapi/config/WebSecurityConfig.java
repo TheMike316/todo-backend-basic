@@ -38,16 +38,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .cors()
                     .and()
             .csrf()
-                .disable()
+                .disable()// todo deal with csrf
             .authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .anyRequest().authenticated()
                     .and()
             .formLogin()
-                    .and()
+                    .disable()
             .httpBasic()
-                    .and()
+                    .disable()
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.NEVER);
         //@Formatter:on
