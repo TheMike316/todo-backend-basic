@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
@@ -26,16 +24,20 @@ public class User extends BaseEntity {
 
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Todo> todos;
 
     @Builder
     public User(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String name, String username,
-                String password, List<Todo> todos) {
+                String password, Role role, List<Todo> todos) {
         super(id, version, createdDate, lastModifiedDate);
         this.name = name;
         this.username = username;
         this.password = password;
+        this.role = role;
         setTodos(todos);
     }
 

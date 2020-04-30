@@ -1,5 +1,6 @@
 package com.example.todoapi.bootstrap;
 
+import com.example.todoapi.domain.Role;
 import com.example.todoapi.domain.Todo;
 import com.example.todoapi.domain.User;
 import com.example.todoapi.repository.UserRepository;
@@ -33,13 +34,21 @@ public class LocalDataBootstrap implements InitializingBean {
                         .name("Baumfisch")
                         .username("baum")
                         .password(encoder.encode("baum"))
+                        .role(Role.USER)
                         .todos(createTodos1())
                         .build(),
                 User.builder()
                         .name("Fischbaum")
                         .username("fisch")
                         .password(encoder.encode("fisch"))
+                        .role(Role.USER)
                         .todos(createTodos2())
+                        .build(),
+                User.builder()
+                        .name("Actuator User")
+                        .username("actuator")
+                        .password(encoder.encode("actuator"))
+                        .role(Role.ACTUATOR)
                         .build()
         );
     }

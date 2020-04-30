@@ -20,8 +20,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public UserDto authenticate(@NonNull String username, @NonNull String password) {
         // this will throw an exception if the credentials are bad and spring deals with the response status
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(username, password);
-        authenticationManager.authenticate(authentication);
+        var authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         return userRepository.findByUsername(username)
                 .map(u -> UserDto.builder()

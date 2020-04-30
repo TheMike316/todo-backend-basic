@@ -2,6 +2,7 @@ package com.example.todoapi.config;
 
 import com.example.todoapi.config.jwt.JwtAuthenticationFiler;
 import com.example.todoapi.config.jwt.JwtTokenProvider;
+import com.example.todoapi.domain.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -48,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                             // (2) jwt practically doubles as a csrf token anyways
             .authorizeRequests()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/api/**").authenticated()
+                .antMatchers("/api/**").hasRole(Role.USER.name())
+                .antMatchers("/actuator/**").hasRole(Role.ACTUATOR.name())
                 .anyRequest().authenticated()
                     .and()
             .formLogin()
@@ -90,6 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 registry.addMapping("/login")
                         .allowedOrigins("http://localhost:8080", "http://127.0.0.1:8080")
                         .allowedMethods("POST");
+                registry.addMapping("/actuator/**").allowedOrigins("*").allowedMethods("GET");
             }
         };
     }

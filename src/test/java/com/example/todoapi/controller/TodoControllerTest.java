@@ -1,5 +1,6 @@
 package com.example.todoapi.controller;
 
+import com.example.todoapi.config.jwt.JwtTokenProvider;
 import com.example.todoapi.service.TodoService;
 import com.example.todoapi.web.v1.controller.TodoController;
 import com.example.todoapi.web.v1.model.TodoDto;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -23,9 +25,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser(username = "baumfisch")
+@WithMockUser(username = "baumfisch", roles = "USER")
 @WebMvcTest(controllers = TodoController.class)
 class TodoControllerTest {
+
+    @MockBean
+    UserDetailsService userDetailsService;
+
+    @MockBean
+    JwtTokenProvider tokenProvider;
 
     @MockBean
     TodoService service;

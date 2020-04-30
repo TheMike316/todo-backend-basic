@@ -2,6 +2,7 @@ package com.example.todoapi.service;
 
 import com.example.todoapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +20,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username)
-                .map(u -> new User(u.getUsername(), u.getPassword(), Collections.emptySet()))
+                .map(u -> new User(u.getUsername(), u.getPassword(),
+                        Collections.singleton(new SimpleGrantedAuthority("ROLE_" + u.getRole().name()))))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 }

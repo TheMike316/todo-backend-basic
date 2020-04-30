@@ -10,3 +10,9 @@ security:
     expiration-in-ms: 86400000 #1 day
     token-prefix: Bearer
     header-name: Authorization
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
