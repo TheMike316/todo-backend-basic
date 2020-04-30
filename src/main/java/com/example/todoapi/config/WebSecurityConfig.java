@@ -87,6 +87,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 registry.addMapping("/api/v1/todo/**")
                         .allowedOrigins("http://localhost:8080", "http://127.0.0.1:8080")
                         .allowedMethods("GET", "POST", "PUT", "DELETE");
+                registry.addMapping("/login")
+                        .allowedOrigins("http://localhost:8080", "http://127.0.0.1:8080")
+                        .allowedMethods("POST");
             }
         };
     }
