@@ -1,5 +1,6 @@
 package com.example.todoapi.service;
 
+import com.example.todoapi.config.jwt.JwtTokenProvider;
 import com.example.todoapi.domain.Todo;
 import com.example.todoapi.domain.User;
 import com.example.todoapi.repository.TodoRepository;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.sql.Timestamp;
@@ -29,6 +31,15 @@ import static org.mockito.Mockito.verify;
 class TodoServiceImplTest {
 
     public static final String USERNAME = "baumfisch";
+
+    @MockBean
+    JwtTokenProvider tokenProvider;
+
+    @MockBean
+    UserDetailsService userDetailsService;
+
+    @MockBean
+    AuthenticationService authenticationService;
 
     @MockBean
     TodoRepository repository;
