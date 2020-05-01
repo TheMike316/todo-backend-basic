@@ -8,6 +8,7 @@ import com.example.todoapi.web.v1.model.TodoDto;
 import com.example.todoapi.web.v1.model.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Secured("ROLE_USER")
 public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;

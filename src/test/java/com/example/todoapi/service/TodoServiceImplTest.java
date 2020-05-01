@@ -1,6 +1,5 @@
 package com.example.todoapi.service;
 
-import com.example.todoapi.config.jwt.JwtTokenProvider;
 import com.example.todoapi.domain.Todo;
 import com.example.todoapi.domain.User;
 import com.example.todoapi.repository.TodoRepository;
@@ -9,11 +8,13 @@ import com.example.todoapi.web.v1.model.TodoDto;
 import com.example.todoapi.web.v1.model.mapper.TodoMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -23,34 +24,22 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
-@WebMvcTest //to facilitate a security context
-@WithMockUser(username = TodoServiceImplTest.USERNAME)
 class TodoServiceImplTest {
 
     public static final String USERNAME = "baumfisch";
 
-    @MockBean
-    JwtTokenProvider tokenProvider;
-
-    @MockBean
-    UserDetailsService userDetailsService;
-
-    @MockBean
-    AuthenticationService authenticationService;
-
-    @MockBean
+    @Mock
     TodoRepository repository;
 
-    @MockBean
+    @Mock
     UserRepository userRepository;
 
-    @MockBean
+    @Mock
     TodoMapper mapper;
 
-    @SpyBean
+    @InjectMocks
     TodoServiceImpl service;
 
     UUID id;
@@ -63,6 +52,8 @@ class TodoServiceImplTest {
 
     @BeforeEach
     void setUp() {
+        MockitoAnnotations.initMocks(this);
+
         id = UUID.randomUUID();
 
         dto = TodoDto.builder()
@@ -93,6 +84,17 @@ class TodoServiceImplTest {
 
         given(mapper.todoDtoToTodo(dto)).willReturn(entity);
         given(mapper.todoToTodoDto(entity)).willReturn(dto);
+
+        mockSecurityContext();
+    }
+
+    private void mockSecurityContext() {
+        var authentication = new UsernamePasswordAuthenticationToken(USERNAME, "password",
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
+
+        var securityContext = mock(SecurityContext.class);
+        given(securityContext.getAuthentication()).willReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
     }
 
     @Test
